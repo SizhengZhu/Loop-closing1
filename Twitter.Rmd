@@ -1,0 +1,40 @@
+---
+title: "Twitter"
+author: "Sizheng Zhu"
+date: "4/25/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+Using your Twitter data create an RMarkdown report including several visualizations. Using knitr create an html document of your report. Save your html document to the working directory.
+
+```{r}
+install.packages("ROAuth")
+install.packages("twitteR")
+library(ROAuth)
+library(twitteR)
+
+api_key <- "fBhxcEcoaUp0A5LQLcmlSskfQ"
+
+api_secret <- "HI09ZrzMHIbdttVaYLZHBsTJK3P5EkFww7MllXSrSwSVYu2res"
+
+access_token <- "988993960252268544-1m8IaVafReELH5hdpb0Jnq1b1CHDuib"
+
+access_token_secret <- "QX2JnU981iJJom2P1iJ3AxyetbU9mlBHiwTBhU6463TA9"
+
+setup_twitter_oauth(api_key, api_secret, access_token, access_token_secret)
+
+TL <- searchTwitter("educational data mining", n=50, since='2018-04-19', until='2018-04-25')#Make sure you change the dates here to be 6 days from today.
+TL <- do.call("rbind", lapply(TL, as.data.frame))
+
+counts=table(TL$screenName)
+barplot(counts, las=2)
+
+#By time of day
+hist(TL$created, breaks = "d")
+```
